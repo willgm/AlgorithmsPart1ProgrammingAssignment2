@@ -73,6 +73,30 @@ public class DequeTest {
     }
 
     @Test
+    public void deveEstourarNoSuchElementExceptionAoInserirERemoverItemDaFrenteEDepoisRemoverUmItemPorTras() {
+        try{
+            subject.addFirst("t");
+            subject.removeFirst();
+            subject.removeLast();
+            fail("Exception not thrown");
+        }catch(java.util.NoSuchElementException e){
+            assert true;
+        }
+    }
+
+    @Test
+    public void deveEstourarNoSuchElementExceptionAoInserirERemoverItemDeTrasEDepoisRemoverUmItemPelaFrente() {
+        try{
+            subject.addLast("t");
+            subject.removeLast();
+            subject.removeFirst();
+            fail("Exception not thrown");
+        }catch(java.util.NoSuchElementException e){
+            assert true;
+        }
+    }
+
+    @Test
     public void deveDesmarMarcarComoVazioAoAdicionar1ItemNaFrente() {
         subject.addFirst("t");
         assertFalse(subject.isEmpty());
@@ -117,5 +141,78 @@ public class DequeTest {
         subject.addFirst("teste 2");
         subject.removeFirst();
         assertEquals("teste 1", subject.removeFirst());
+    }
+
+    @Test
+    public void deveDesmarMarcarComoVazioAoAdicionar1ItemAtras() {
+        subject.addLast("t");
+        assertFalse(subject.isEmpty());
+    }
+
+    @Test
+    public void deveTerTamanho1AoIniciarAdicionar1ItemAtras() {
+        subject.addLast("t");
+        assertEquals(1, subject.size());
+    }
+
+    @Test
+    public void deveAdicionarUmItemEResgataloAtras() {
+        subject.addLast("teste");
+        assertEquals("teste", subject.removeFirst());
+    }
+
+    @Test
+    public void deveMarcarComoVazioAoAdicionarRemoverItemAtras() {
+        subject.addLast("t");
+        subject.removeLast();
+        assertTrue(subject.isEmpty());
+    }
+
+    @Test
+    public void deveTerTamanhoZeroAoAdicionarRemoverItemAtras() {
+        subject.addLast("t");
+        subject.removeLast();
+        assertEquals(0, subject.size());
+    }
+
+    @Test
+    public void deveRetornarSegundoItemAoAdicionar2Atras() {
+        subject.addLast("teste 1");
+        subject.addLast("teste 2");
+        assertEquals("teste 2", subject.removeLast());
+    }
+
+    @Test
+    public void deveRetornarPrimeiroItemAoAdicionarRemover3SeguidosAtras() {
+        subject.addLast("teste 1");
+        subject.addLast("teste 2");
+        subject.addLast("teste 3");
+        subject.removeLast();
+        subject.removeLast();
+        assertEquals("teste 1", subject.removeLast());
+    }
+
+    @Test
+    public void deveRetornarItemDaFrenteAoAdicionar3SeguidosAtras() {
+        subject.addLast("teste 1");
+        subject.addLast("teste 2");
+        subject.addLast("teste 3");
+        assertEquals("teste 1", subject.removeFirst());
+    }
+
+    @Test
+    public void deveRetornarItemDeTrasAoAdicionar3AtrasRemover3SeguidosNaFrente() {
+        subject.addLast("teste 1");
+        subject.addLast("teste 2");
+        subject.addLast("teste 3");
+        subject.removeFirst();
+        subject.removeFirst();
+        assertEquals("teste 3", subject.removeFirst());
+    }
+
+    @Test
+    public void deveRetornarItemPelaFrenteQueFoiAdicionadoPorAtras() {
+        subject.addLast("teste 1");
+        assertEquals("teste 1", subject.removeLast());
     }
 }
