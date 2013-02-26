@@ -255,5 +255,15 @@ public class DequeTest {
             assert true;
         }
     }
+
+    @Test
+    public void deveEstourarNoSuchElementExceptionAoTentarDarNextEmumInteratorVazio() {
+        try{
+            subject.iterator().next();
+            fail("Exception not thrown");
+        }catch(java.util.NoSuchElementException e){
+            assert true;
+        }
+    }
     
 }
