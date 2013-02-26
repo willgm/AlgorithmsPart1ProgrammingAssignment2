@@ -32,9 +32,9 @@ public class Deque<Item> implements Iterable<Item> {
         Node oldfirst = first;
         first = new Node();
         first.item = item;
-        first.befo = oldfirst;
+        first.next = oldfirst;
         if(oldfirst!=null)
-            oldfirst.next = first;
+            oldfirst.befo = first;
         if(last==null)
             last = first;
         size++;
@@ -48,9 +48,9 @@ public class Deque<Item> implements Iterable<Item> {
         Node oldlast = last;
         last = new Node();
         last.item = item;
-        last.next = oldlast;
+        last.befo = oldlast;
         if(oldlast!=null)
-            oldlast.befo = last;
+            oldlast.next = last;
         if(first==null)
             first = last;
         size++;
@@ -61,11 +61,14 @@ public class Deque<Item> implements Iterable<Item> {
         if(isEmpty())
             throw new java.util.NoSuchElementException("Deque is empty.");
         
-        Item item = first.item;
-        first = first.befo;
+        Node oldFirst = first;
+        Item item = oldFirst.item;
+        first = oldFirst.next;
         if(first==null)
             last = first;
         size--;
+        
+        cleanRefTo(oldFirst);
         
         return item;
     }
@@ -75,17 +78,48 @@ public class Deque<Item> implements Iterable<Item> {
         if(isEmpty())
             throw new java.util.NoSuchElementException("Deque is empty.");
         
-        Item item = last.item;
-        last = last.next;
+        Node oldLast = last;
+        Item item = oldLast.item;
+        last = oldLast.befo;
         if(last==null)
             first = last;
         size--;
         
+        cleanRefTo(oldLast);
+        
         return item;
+    }
+    
+    private void cleanRefTo(Node n){
+        if(n.befo!=null){
+            n.befo.next = null;
+            n.befo = null;
+        }
+        if(n.next!=null){
+            n.next.befo = null;
+            n.next = null;
+        }
+        n.item = null;
     }
     
     // return an iterator over items in order from front to end
     public java.util.Iterator<Item> iterator(){
-        return null;
+        return new DequeIterator();
+    }
+    
+    private class DequeIterator implements java.util.Iterator<Item>
+    {
+        private Node current = first;
+        public boolean hasNext(){
+            return current != null;
+        }
+        public void remove(){
+            throw new UnsupportedOperationException();
+        }      
+        public Item next(){
+            Item item = current.item;
+            current   = current.next; 
+            return item;
+        }
     }
 }

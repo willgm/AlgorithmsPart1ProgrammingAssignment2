@@ -1,18 +1,9 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.Ignore;
 
-/**
- *
- * @author William
- */
 public class DequeTest {
     
     Deque<String> subject;
@@ -215,4 +206,54 @@ public class DequeTest {
         subject.addLast("teste 1");
         assertEquals("teste 1", subject.removeLast());
     }
+
+    @Test
+    public void deveRetornarIteratorVazioSeNadaForAdicionado() {
+        assertFalse(subject.iterator().hasNext());
+    }
+
+    @Test
+    public void deveRetornarIteratorNãoVazioUmItemForAdicionadoAnteriormentePorTras() {
+        subject.addLast("t");
+        assertTrue(subject.iterator().hasNext());
+    }
+
+    @Test
+    public void deveRetornarIteratorNãoVazioUmItemForAdicionadoAnteriormentePelaFrente() {
+        subject.addFirst("t");
+        assertTrue(subject.iterator().hasNext());
+    }
+
+    @Test
+    public void deveFazerLoopPelosItensAdicionadosNoIteratorAnteriormentePorTras() {
+        subject.addLast("t1");
+        subject.addLast("t2");
+        subject.addLast("t3");
+        String assertTest = "";
+        for(String t : subject)
+            assertTest += t;
+        assertEquals("t1t2t3", assertTest);
+    }
+
+    @Test
+    public void deveFazerLoopPelosItensAdicionadosNoIteratorAnteriormentePelaFrente() {
+        subject.addFirst("t1");
+        subject.addFirst("t2");
+        subject.addFirst("t3");
+        String assertTest = "";
+        for(String t : subject)
+            assertTest += t;
+        assertEquals("t3t2t1", assertTest);
+    }
+
+    @Test
+    public void deveEstourarUnsupportedOperationExceptionAoTentarRemoverItemPeloInterator() {
+        try{
+            subject.iterator().remove();
+            fail("Exception not thrown");
+        }catch(UnsupportedOperationException e){
+            assert true;
+        }
+    }
+    
 }
